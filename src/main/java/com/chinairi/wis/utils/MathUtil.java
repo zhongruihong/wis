@@ -76,9 +76,13 @@ public class MathUtil {
 	}
 
 	public static String byteToString(byte[] b) {
+
 		if (b != null && b.length > 0) {
+			String s = "";
 			try {
-				return new String(b, "GBK");
+				s = new String(b, "GB18030");
+				s = s.replaceAll("\\p{C}", "");
+				return s;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -93,14 +97,21 @@ public class MathUtil {
 		return c;
 	}
 
-	public static String byteToUChar(byte[] b) {
-		// TODO Auto-generated method stub
-		return null;
+	public static char byteToUChar(byte[] b) {
+		char s = '0';
+		if (b != null && b.length > 0) {
+			DataInputStream dis = new DataInputStream(new ByteArrayInputStream(b));
+			try {
+				s = dis.readChar();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return s;
 	}
 
-	public static String byteToUShort(byte[] b) {
-		// TODO Auto-generated method stub
-		return null;
+	public static int byteToUShort(byte[] b) {
+		return byteToUInt(b);
 	}
 
 	public static int byteToUInt(byte[] b) {
