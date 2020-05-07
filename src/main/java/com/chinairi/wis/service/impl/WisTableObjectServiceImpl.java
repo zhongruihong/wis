@@ -49,19 +49,11 @@ public class WisTableObjectServiceImpl implements WisTableObjectService {
 						byte[] filedBuf = new byte[40];
 						dis.read(filedBuf, 0, 40);
 						String filed_name = MathUtil.byteToString(Arrays.copyOfRange(filedBuf, 0, 32));
-						filed.setFiled_name(filed_name.split("\\x00")[0]);
-						short filed_type = MathUtil.byteToShort(Arrays.copyOfRange(filedBuf, 32, 36));
+						filed.setFiled_name(filed_name.trim());
+						short filed_type = MathUtil.byteToShort(Arrays.copyOfRange(filedBuf, 32, 34));
+						short filed_length = MathUtil.byteToShort(Arrays.copyOfRange(filedBuf, 34, 36));
 						filed.setFiled_type(filed_type);
-						byte[] length = Arrays.copyOfRange(filedBuf, 36, 40);
-						// TODO: byte[] -> unsinged long type为6(string)的长度必须通过(36,40)位转换！
-						// ==========================================
-//						int byteToInt = MathUtil.byteToInt(length);
-//						char byteToChar = MathUtil.byteToChar(length);
-//						short byteToShort = MathUtil.byteToShort(length);
-//						long dwordBytesToLong = MathUtil.dwordBytesToLong(length);
-						// filed_length = MathUtil.byteToULong(length);
-						// =========================================
-						long filed_length = 0;
+						// byte[] kepp = Arrays.copyOfRange(filedBuf, 36, 40);
 						filed.setFiled_length(filed_length);
 						rowLen += filed_length;
 						list.add(filed);
@@ -113,23 +105,38 @@ public class WisTableObjectServiceImpl implements WisTableObjectService {
 				int row_length = tableObject.getTab_row_length();
 				int offset = tableObject.getTab_data_offset();
 				List<WisTableField> filedList = tableObject.getFiledList();
+				StringBuffer head = new StringBuffer();
+				for (int i = 0; i < filedList.size(); i++) {
+					head.append(filedList.get(i).getFiled_name() + ",");
+				}
+				head.deleteCharAt(head.length() - 1);
+				if (format == 0) {
+					table.add(head.toString());
+				} else if (format == 1) {
+					table.add(head.toString().split(","));
+				}
 				byte[] buf = new byte[offset + 8 + filed_num * 40];
 				dis.read(buf, 0, offset + 8 + filed_num * 40);
+				int len = 0;
 				for (int i = 0; i < record_num; i++) {
 					StringBuffer sb = new StringBuffer();
+					byte[] row = new byte[row_length];
+					dis.read(row, 0, row_length);
 					for (int j = 0; j < filed_num; j++) {// one row
-						byte[] row = new byte[row_length];
-						dis.read(row, 0, row_length);
 						int type = filedList.get(j).getFiled_type();
 						int length = (int) filedList.get(j).getFiled_length();
-						byte[] b = Arrays.copyOfRange(row, 0, length);
+						byte[] b = Arrays.copyOfRange(row, len, len + length);
+						len += b.length;
 						Object o = byteToContent(type, b);
-						sb.append(o + "\t");
+						sb.append(o + ",");
 					}
+					len = 0;
+					sb.deleteCharAt(sb.length() - 1);
+					sb.append("\r\n");
 					if (format == 0) {
 						table.add(sb.toString());
 					} else if (format == 1) {
-						table.add(sb.toString().split("\t"));
+						table.add(sb.toString().split(","));
 					}
 				}
 				return table;

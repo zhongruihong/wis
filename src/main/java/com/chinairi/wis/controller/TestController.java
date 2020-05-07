@@ -32,7 +32,7 @@ public class TestController {
 					List<Map<String, List<Object>>> tables = fileService.getTables(file);
 					List<Map<String, String>> streamContent = fileService.getStreamContents(file);
 					List<Map<String, List<String>>> channelCurves = fileService.getChannelCurves(file);
-					return streamContent;
+					return tables;
 				}
 			}
 			log.info("==========wis file end=============");

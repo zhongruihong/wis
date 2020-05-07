@@ -5,7 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 public class MathUtil {
-	
+
 	public static short byteToShort(byte[] b) {
 		if (b != null && b.length > 0) {
 			short s = 0;
@@ -19,11 +19,8 @@ public class MathUtil {
 
 	public static int byteToInt(byte[] b) {
 		if (b != null && b.length > 0) {
-			int b0 = b[0] & 0xFF;
-			int b1 = b[1] & 0xFF;
-			int b2 = b[2] & 0xFF;
-			int b3 = b[3] & 0xFF;
-			int i = (b0 << 24) | (b1 << 18) | (b2 << 8) | b3;
+			int i;
+			i = (int) ((b[0] & 0xFF) | ((b[1] & 0xFF) << 8) | ((b[2] & 0xFF) << 16) | ((b[3] & 0xFF) << 24));
 			return i;
 		}
 		return 0;
