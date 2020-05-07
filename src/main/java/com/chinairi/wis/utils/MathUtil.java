@@ -74,9 +74,8 @@ public class MathUtil {
 		}
 		return 0.0;
 	}
-
+	//TODO:去除不可见字符
 	public static String byteToString(byte[] b) {
-
 		if (b != null && b.length > 0) {
 			String s = "";
 			try {

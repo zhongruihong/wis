@@ -6,13 +6,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
-
 import org.springframework.stereotype.Service;
-
 import com.chinairi.wis.entity.WisHead;
 import com.chinairi.wis.service.WisHeadService;
 import com.chinairi.wis.utils.MathUtil;
+import lombok.extern.slf4j.Slf4j;
 @Service
+@Slf4j
 public class WisHeadServiceImpl implements WisHeadService {
 	@Override
 	public WisHead getWisHead(File file) throws Exception {
@@ -40,6 +40,7 @@ public class WisHeadServiceImpl implements WisHeadService {
 				dis.close();
 				is.close();
 			}
+			log.info("文件头:"+head.toString());
 			return head;
 		}
 		return null;

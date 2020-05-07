@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.chinairi.wis.entity.WisHead;
 import com.chinairi.wis.entity.WisObjectEntry;
 import com.chinairi.wis.service.WisHeadService;
 import com.chinairi.wis.service.WisObjectEntryService;
 import com.chinairi.wis.utils.MathUtil;
+import lombok.extern.slf4j.Slf4j;
 @Service
+@Slf4j
 public class WisObjectEntryServiceImpl implements WisObjectEntryService {
 
 	@Autowired
@@ -47,6 +47,7 @@ public class WisObjectEntryServiceImpl implements WisObjectEntryService {
 					entry.setObj_create_time(new Date(MathUtil.dwordBytesToLong(Arrays.copyOfRange(itemBuf, 32, 36)) * 1000));
 					entry.setObj_update_time(new Date(MathUtil.dwordBytesToLong(Arrays.copyOfRange(itemBuf, 36, 40)) * 1000));
 					entry.setObj_desc(MathUtil.byteToString(Arrays.copyOfRange(itemBuf, 40, 72)));
+					log.info("入口:"+entry.getObj_name()+"\r\n"+entry.toString());
 					list.add(entry);
 				}
 			} catch (IOException e) {

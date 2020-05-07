@@ -6,5 +6,6 @@ import lombok.Data;
 public class WisTableField {
 	private String filed_name;//字段名
 	private int filed_type;//字段类型
-	private long filed_length;//TODO:unsigned long java无解....
+	private long filed_length;
+	private String keep;
 }

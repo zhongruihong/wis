@@ -29,9 +29,9 @@ public class TestController {
 			if(FileUtil.hasWis(path)) {
 				File file = new File(path);
 				if(file.exists()) {
-					List<Map<String, List<Object>>> tables = fileService.getTables(file);
 					List<Map<String, String>> streamContent = fileService.getStreamContents(file);
 					List<Map<String, List<String>>> channelCurves = fileService.getChannelCurves(file);
+					List<Map<String, List<Object>>> tables = fileService.getTables(file);
 					return tables;
 				}
 			}

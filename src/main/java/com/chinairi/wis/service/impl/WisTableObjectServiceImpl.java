@@ -17,8 +17,10 @@ import com.chinairi.wis.entity.WisTableObject;
 import com.chinairi.wis.service.WisObjectEntryService;
 import com.chinairi.wis.service.WisTableObjectService;
 import com.chinairi.wis.utils.MathUtil;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class WisTableObjectServiceImpl implements WisTableObjectService {
 	@Autowired
 	private WisObjectEntryService entryService;
@@ -53,7 +55,7 @@ public class WisTableObjectServiceImpl implements WisTableObjectService {
 						short filed_type = MathUtil.byteToShort(Arrays.copyOfRange(filedBuf, 32, 34));
 						short filed_length = MathUtil.byteToShort(Arrays.copyOfRange(filedBuf, 34, 36));
 						filed.setFiled_type(filed_type);
-						// byte[] kepp = Arrays.copyOfRange(filedBuf, 36, 40);
+						// byte[] keep = Arrays.copyOfRange(filedBuf, 36, 40);
 						filed.setFiled_length(filed_length);
 						rowLen += filed_length;
 						list.add(filed);
@@ -80,7 +82,8 @@ public class WisTableObjectServiceImpl implements WisTableObjectService {
 			for (int i = 0; i < entries.size(); i++) {
 				WisTableObject wisTableObject = getWisTableObject(file, entries.get(i));
 				if (wisTableObject != null)
-					list.add(wisTableObject);
+					log.info("表对象:" + wisTableObject.getTab_name() + "\r\n" + wisTableObject.toString());
+				list.add(wisTableObject);
 			}
 			return list;
 		}
@@ -110,6 +113,7 @@ public class WisTableObjectServiceImpl implements WisTableObjectService {
 					head.append(filedList.get(i).getFiled_name() + ",");
 				}
 				head.deleteCharAt(head.length() - 1);
+				log.info("开始解析表：" + tableObject.getTab_name());
 				if (format == 0) {
 					table.add(head.toString());
 				} else if (format == 1) {
