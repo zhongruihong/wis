@@ -27,7 +27,7 @@ public class WisStreamObjectServiceImpl implements WisStreamObjectService {
 	@Override
 	public WisStreamObject getWisStreamObject(File file, WisObjectEntry entry) throws Exception {
 		if (file.exists() && entry != null) {
-			if (entry.getObj_primary_attribute() == 3) {
+			if (entry.getObj_status() == 0 && entry.getObj_primary_attribute() == 3) {
 				FileInputStream is = new FileInputStream(file);
 				DataInputStream dis = new DataInputStream(is);
 				WisStreamObject streamObj = new WisStreamObject();

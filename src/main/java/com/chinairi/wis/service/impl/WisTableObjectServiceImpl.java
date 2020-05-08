@@ -28,7 +28,7 @@ public class WisTableObjectServiceImpl implements WisTableObjectService {
 	@Override
 	public WisTableObject getWisTableObject(File file, WisObjectEntry entry) throws Exception {
 		if (file.exists() && entry != null) {
-			if (entry.getObj_primary_attribute() == 2) {
+			if (entry.getObj_status() == 0 && entry.getObj_primary_attribute() == 2) {
 				FileInputStream is = new FileInputStream(file);
 				DataInputStream dis = new DataInputStream(is);
 				WisTableObject wisTableObject = new WisTableObject();

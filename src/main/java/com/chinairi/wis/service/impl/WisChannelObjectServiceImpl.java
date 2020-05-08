@@ -28,7 +28,7 @@ public class WisChannelObjectServiceImpl implements WisChannelObjectService {
 	private WisObjectEntryService entryService;
 	@Override
 	public WisChannelObject getWisChannelObject(File file, WisObjectEntry entry) throws Exception {
-		if (entry.getObj_primary_attribute() == 1 && entry.getObj_sub_attribute() == 1) {
+		if (entry.getObj_status() == 0 && entry.getObj_primary_attribute() == 1 && entry.getObj_sub_attribute() == 1) {
 			if (file.exists()) {
 				FileInputStream is = new FileInputStream(file);
 				DataInputStream dis = new DataInputStream(is);
